@@ -6,10 +6,10 @@ import type {
 } from 'n8n-workflow';
 import { NodeConnectionType, NodeOperationError } from 'n8n-workflow';
 
-export class ExampleNode implements INodeType {
+class Printix implements INodeType {
 	description: INodeTypeDescription = {
-		displayName: 'Example Node',
-		name: 'exampleNode',
+		displayName: 'Printix Cloud Print',
+		name: 'printix',
 		group: ['transform'],
 		version: 1,
 		description: 'Basic Example Node',
@@ -75,3 +75,5 @@ export class ExampleNode implements INodeType {
 		return [items];
 	}
 }
+
+module.exports = { Printix };
