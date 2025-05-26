@@ -1,59 +1,53 @@
 {
   "name": "n8n-nodes-printix-cloud-print",
   "version": "0.1.0",
-  "description": "",
+  "description": "This is an n8n community node. It lets you use Printix Cloud Print in your n8n workflows.",
   "keywords": [
     "n8n-community-node-package"
   ],
   "license": "MIT",
-  "homepage": "",
+  "homepage": "https://www.elasticit.com/",
   "author": {
-    "name": "",
-    "email": ""
+    "name": "Robert Birone",
+    "email": "robertb@elasticit.com"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/ElasticIT-LLC/n8n-nodes-printix-cloud-print.git"
   },
   "engines": {
-    "node": ">=18.10",
-    "pnpm": ">=9.1"
+    "node": ">=20.15"
   },
-  "packageManager": "pnpm@10.10.0",
   "main": "index.js",
   "scripts": {
-    "preinstall": "npx only-allow pnpm",
     "build": "tsc && gulp build:icons",
     "dev": "tsc --watch",
     "format": "prettier nodes credentials --write",
     "lint": "eslint nodes credentials package.json",
     "lintfix": "eslint nodes credentials package.json --fix",
-    "prepublishOnly": "pnpm build && pnpm lint -c .eslintrc.prepublish.js nodes credentials package.json"
+    "prepublishOnly": "npm build && npm lint -c .eslintrc.prepublish.js nodes credentials package.json"
   },
   "files": [
     "dist"
   ],
   "n8n": {
     "n8nNodesApiVersion": 1,
-    "credentials": [],
+    "credentials": [
+      "dist/credentials/PrintixCloudPrintOAuth2Api.credentials.js"
+    ],
     "nodes": [
-      "dist/nodes/Printix/Printix.node.js"
+      "dist/nodes/PrintixCloudPrint/PrintixCloudPrint.node.js"
     ]
   },
   "devDependencies": {
-    "@types/node": "^22.15.21",
-    "@typescript-eslint/parser": "^7.15.0",
-    "eslint": "^8.56.0",
-    "eslint-plugin-n8n-nodes-base": "^1.16.1",
-    "gulp": "^4.0.2",
-    "prettier": "^3.3.2",
-    "typescript": "^5.5.3"
+    "@typescript-eslint/parser": "~8.32.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-n8n-nodes-base": "^1.16.3",
+    "gulp": "^5.0.0",
+    "prettier": "^3.5.3",
+    "typescript": "^5.8.2"
   },
   "peerDependencies": {
     "n8n-workflow": "*"
-  },
-  "dependencies": {
-    "n8n": "^1.91.2",
-    "n8n-core": "^1.14.1"
   }
 }
