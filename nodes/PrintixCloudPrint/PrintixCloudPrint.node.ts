@@ -3,7 +3,7 @@ import {
 	INodeTypeDescription,
 	NodeConnectionType,
 } from 'n8n-workflow';
-import { printerOperations } from './descriptions/PrinterDescription';
+import { printerOperations, printerFields } from './descriptions/PrinterDescription';
 
 export class PrintixCloudPrint implements INodeType {
 	description: INodeTypeDescription = {
@@ -34,6 +34,7 @@ export class PrintixCloudPrint implements INodeType {
 		},
 		properties: [
 			...printerOperations,
+			...printerFields,
 		],
 	};
 
