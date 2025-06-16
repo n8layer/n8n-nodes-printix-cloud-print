@@ -26,7 +26,7 @@ export class PrintixCloudPrint implements INodeType {
 			},
 		],
 		requestDefaults: {
-			baseURL: '={{$credentials.baseUrl + "/tenants/" + $credentials.tenantId}}',
+			baseURL: '={{$credentials.baseUrl}}',
 			headers: {
 				Accept: 'application/json',
 				'Content-Type': 'application/json',
