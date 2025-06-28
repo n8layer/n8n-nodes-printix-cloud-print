@@ -2,19 +2,6 @@ import type { INodeProperties } from 'n8n-workflow';
 
 export const printerOperations: INodeProperties[] = [
 	{
-		displayName: 'Resource',
-		name: 'resource',
-		type: 'options',
-		noDataExpression: true,
-		options: [
-			{
-				name: 'Printer',
-				value: 'printer',
-			},
-		],
-		default: 'printer',
-	},
-	{
 		displayName: 'Operation',
 		name: 'operation',
 		type: 'options',
@@ -94,52 +81,52 @@ export const printerFields: INodeProperties[] = [
 		displayName: 'Serial Number',
 		name: 'serialNo',
 		type: 'string',
-		default: '',
-		description: 'The serial number of the printer',
-			displayOptions: {
-				show: {
-					resource: ['printer'],
-					operation: ['getPrinter'],
-			},
-		},
-	},
-	{
-		displayName: 'Location',
-		name: 'location',
-		type: 'string',
-		default: '',
-		description: 'The location of the printer',
-			displayOptions: {
+		displayOptions: {
 			show: {
 				resource: ['printer'],
 				operation: ['getPrinter'],
 			},
 		},
+		default: '',
+		description: 'The serial number of the printer',
+	},
+	{
+		displayName: 'Location',
+		name: 'location',
+		type: 'string',
+		displayOptions: {
+			show: {
+				resource: ['printer'],
+				operation: ['getPrinter'],
+			},
+		},
+		default: '',
+		description: 'The location of the printer',
 	},
 	{
 		displayName: 'Model',
 		name: 'model',
 		type: 'string',
-		default: '',
-		description: 'The model of the printer',
-			displayOptions: {
-				show: {
-					resource: ['printer'],
-					operation: ['getPrinter'],
+		displayOptions: {
+			show: {
+				resource: ['printer'],
+				operation: ['getPrinter'],
 			},
 		},
+		default: '',
+		description: 'The model of the printer',
 	},
 	{
 		displayName: 'Vendor',
 		name: 'vendor',
 		type: 'string',
-		default: '',
-		description: 'The vendor of the printer',
-			displayOptions: {
-				show: {
-					resource: ['printer'],
-					operation: ['getPrinter'],
+		displayOptions: {
+			show: {
+				resource: ['printer'],
+				operation: ['getPrinter'],
 			},
 		},
+		default: '',
+		description: 'The vendor of the printer',
 	},
 ];

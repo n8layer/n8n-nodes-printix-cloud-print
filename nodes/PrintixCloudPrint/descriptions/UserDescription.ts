@@ -1,0 +1,213 @@
+import type { INodeProperties } from 'n8n-workflow';
+
+export const userOperations: INodeProperties[] = [
+	{
+		displayName: 'Operation',
+		name: 'operation',
+		type: 'options',
+		noDataExpression: true,
+		displayOptions: {
+			show: {
+				resource: [
+					'user',
+				],
+			},
+		},
+		options: [
+			{
+				name: 'Create User',
+				value: 'createUser',
+				description: 'Create a user',
+				action: 'Create user',
+				routing: {
+					request: {
+						method: 'POST',
+						url: '/users/create',
+						body: {
+							email: '={{ $parameter.email }}',
+							fullName: '={{ $parameter.fullName }}',
+							role: '={{ $parameter.role }}',
+							pin: '={{ $parameter.pin }}',
+							password: '={{ $parameter.password }}',
+							sendWelcomeEmail: '={{ $parameter.sendWelcomeEmail }}',
+						},
+					},
+				},
+			},
+			{
+				name: 'Delete User',
+				value: 'deleteUser',
+				description: 'Delete a user',
+				action: 'Delete user',
+				routing: {
+					request: {
+						method: 'POST',
+						url: '=/users/{{$parameter["userId"]}}/delete',
+					},
+				},
+			},
+			{
+				name: 'Get Many Users',
+				value: 'getUsers',
+				description: 'Get users',
+				action: 'Get many users',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '/users',
+						qs: {
+							role: '={{ $parameter.role || undefined }}',
+						},
+					},
+				},
+			},
+			{
+				name: 'Get User',
+				value: 'getUser',
+				description: 'Get a user',
+				action: 'Get user',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '/users',
+						body: {
+							id: '={{ $parameter.userId }}',
+						},
+					},
+				},
+			},
+		],
+		default: 'getUsers',
+	},
+
+];
+
+export const userFields: INodeProperties[] = [
+	{
+		displayName: 'Role',
+		name: 'role',
+		type: 'options',
+		options: [
+			{
+				name: 'USER',
+				value: 'USER',
+			},
+			{
+				name: 'GUEST_USER',
+				value: 'GUEST_USER',
+			},
+		],
+		displayOptions: {
+			show: {
+				resource: ['user'],
+				operation: ['getUsers'],
+			},
+		},
+		default: 'USER',
+		description: 'The role of the user to get (optional)',
+	},
+	{
+		displayName: 'Email',
+		name: 'email',
+		type: 'string',
+		placeholder: 'name@email.com',
+		displayOptions: {
+			show: {
+				resource: ['user'],
+				operation: ['createUser'],
+			},
+		},
+		default: '',
+		description: 'Email address of the user',
+	},
+	{
+		displayName: 'Full Name',
+		name: 'fullName',
+		type: 'string',
+		placeholder: 'John Doe',
+		displayOptions: {
+			show: {
+				resource: ['user'],
+				operation: ['createUser'],
+			},
+		},
+		default: '',
+		description: 'Full name of the user',
+	},
+	{
+		displayName: 'Role',
+		name: 'role',
+		type: 'options',
+		options: [
+			{
+				name: 'GUEST_USER',
+				value: 'GUEST_USER',
+			},
+		],
+		displayOptions: {
+			show: {
+				resource: ['user'],
+				operation: ['createUser'],
+			},
+		},
+		default: 'GUEST_USER',
+		description: 'Role of the user',
+	},
+	{
+		displayName: 'Pin',
+		name: 'pin',
+		type: 'string',
+		placeholder: '1234',
+		displayOptions: {
+			show: {
+				resource: ['user'],
+				operation: ['createUser'],
+			},
+		},
+		default: '',
+		description: 'Pin of the user',
+	},
+	{
+		displayName: 'Password',
+		name: 'password',
+		type: 'string',
+		typeOptions: {
+			password: true,
+		},
+		placeholder: 'password',
+		displayOptions: {
+			show: {
+				resource: ['user'],
+				operation: ['createUser'],
+			},
+		},
+		default: '',
+		description: 'Password of the user',
+	},
+	{
+		displayName: 'Send Welcome Email',
+		name: 'sendWelcomeEmail',
+		type: 'boolean',
+		displayOptions: {
+			show: {
+				resource: ['user'],
+				operation: ['createUser'],
+			},
+		},
+		default: false,
+		description: 'Whether to send a welcome email to the user',
+	},
+	{
+		displayName: 'User ID',
+		name: 'userId',
+		type: 'string',
+		displayOptions: {
+			show: {
+				resource: ['user'],
+				operation: ['deleteUser', 'getUser'],
+			},
+		},
+		default: '',
+		description: 'ID of the user to delete',
+	},
+]

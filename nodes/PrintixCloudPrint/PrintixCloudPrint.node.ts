@@ -3,8 +3,12 @@ import {
 	INodeTypeDescription,
 	NodeConnectionType,
 } from 'n8n-workflow';
-import { printerOperations, printerFields } from './descriptions/PrinterDescription';
 
+import { printerOperations, printerFields } from './descriptions/PrinterDescription';
+import { userFields, userOperations } from './descriptions/UserDescription';
+import { siteFields, siteOperations } from './descriptions/SiteDescription';
+import { networkOperations, networkFields } from './descriptions/NetworkDescription';
+import { groupOperations, groupFields } from './descriptions/GroupDescription';
 export class PrintixCloudPrint implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Printix Cloud Print',
@@ -17,6 +21,7 @@ export class PrintixCloudPrint implements INodeType {
 		defaults: {
 			name: 'Printix Cloud Print',
 		},
+		usableAsTool: true,
 		inputs: [NodeConnectionType.Main],
 		outputs: [NodeConnectionType.Main],
 		credentials: [
@@ -33,85 +38,45 @@ export class PrintixCloudPrint implements INodeType {
 			},
 		},
 		properties: [
+			{
+				displayName: 'Resource',
+				name: 'resource',
+				type: 'options',
+				noDataExpression: true,
+				options: [
+					{
+						name: 'Group',
+						value: 'group',
+					},
+					{
+						name: 'Network',
+						value: 'network',
+					},
+					{
+						name: 'Printer',
+						value: 'printer',
+					},
+					{
+						name: 'Site',
+						value: 'site',
+					},
+					{
+						name: 'User',
+						value: 'user',
+					},
+				],
+				default: 'printer',
+			},
 			...printerOperations,
 			...printerFields,
+			...siteOperations,
+			...siteFields,
+			...userOperations,
+			...userFields,
+			...networkOperations,
+			...networkFields,
+			...groupOperations,
+			...groupFields,
 		],
 	};
-
-// 	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
-// 		const items = this.getInputData();
-// 		const returnData: INodeExecutionData[] = [];
-
-// 		const resource = this.getNodeParameter('resource', 0) as string;
-// 		const operation = this.getNodeParameter('operation', 0) as string;
-
-// 		for (let i = 0; i < items.length; i++) {
-// 			try {
-// 				if (resource === 'printer') {
-// 					if (operation === 'getAll') {
-// 						const response = await this.helpers.requestWithAuthentication.call(
-// 							this,
-// 							'printixCloudPrintOAuth2Api',
-// 							{
-// 								method: 'GET',
-// 								url: '/printers',
-// 							},
-// 						);
-// 						returnData.push({ json: response });
-// 					} else if (operation === 'get') {
-// 						const printerId = this.getNodeParameter('printerId', i) as string;
-// 						const response = await this.helpers.requestWithAuthentication.call(
-// 							this,
-// 							'printixCloudPrintOAuth2Api',
-// 							{
-// 								method: 'GET',
-// 								url: `/printers/${printerId}`,
-// 							},
-// 						);
-// 						returnData.push({ json: response });
-// 					}
-// 				} else if (resource === 'printJob') {
-// 					if (operation === 'getAll') {
-// 						const response = await this.helpers.requestWithAuthentication.call(
-// 							this,
-// 							'printixCloudPrintOAuth2Api',
-// 							{
-// 								method: 'GET',
-// 								url: '/printjobs',
-// 							},
-// 						);
-// 						returnData.push({ json: response });
-// 					} else if (operation === 'create') {
-// 						// This would need more parameters for creating a print job
-// 						// For now, just show the structure
-// 						const response = await this.helpers.requestWithAuthentication.call(
-// 							this,
-// 							'printixCloudPrintOAuth2Api',
-// 							{
-// 								method: 'POST',
-// 								url: '/printjobs',
-// 								body: {
-// 									// Print job parameters would go here
-// 								},
-// 							},
-// 						);
-// 						returnData.push({ json: response });
-// 					}
-// 				}
-// 			} catch (error) {
-// 				if (this.continueOnFail()) {
-// 					returnData.push({
-// 						json: { error: error.message },
-// 						pairedItem: { item: i },
-// 					});
-// 					continue;
-// 				}
-// 				throw new NodeOperationError(this.getNode(), error as Error, {
-// 					itemIndex: i,
-// 				});
-// 			}
-// 		}
-
-// 		return [returnData];
-// 	}
 }
