@@ -9,6 +9,7 @@ import { userFields, userOperations } from './descriptions/UserDescription';
 import { siteFields, siteOperations } from './descriptions/SiteDescription';
 import { networkOperations, networkFields } from './descriptions/NetworkDescription';
 import { groupOperations, groupFields } from './descriptions/GroupDescription';
+import { jobOperations, jobFields } from './descriptions/JobDescription';
 export class PrintixCloudPrint implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Printix Cloud Print',
@@ -49,6 +50,10 @@ export class PrintixCloudPrint implements INodeType {
 						value: 'group',
 					},
 					{
+						name: 'Job',
+						value: 'job',
+					},
+					{
 						name: 'Network',
 						value: 'network',
 					},
@@ -77,6 +82,8 @@ export class PrintixCloudPrint implements INodeType {
 			...networkFields,
 			...groupOperations,
 			...groupFields,
+			...jobOperations,
+			...jobFields,
 		],
 	};
 }
