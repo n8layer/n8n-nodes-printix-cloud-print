@@ -71,24 +71,24 @@ export const siteOperations: INodeProperties[] = [
 					},
 				},
 			},
-			{
-				name: 'Update A Site',
-				value: 'updateSite',
-				description: 'Update site',
-				action: 'Update site',
-				routing: {
-					request: {
-						method: 'PUT',
-						url: '=/sites/{{$parameter["siteId"]}}',
-						body: {
-							name: '={{ $parameter.name }}',
-							path: '={{ $parameter.path }}',
-							adminGroupIds: ['={{ $parameter.adminGroupIds }}'],
-							networkIds: ['={{ $parameter.networkIds }}'],
-						},
-					},
-				},
-			},
+			// {
+			// 	name: 'Update A Site',
+			// 	value: 'updateSite',
+			// 	description: 'Update site',
+			// 	action: 'Update site',
+			// 	routing: {
+			// 		request: {
+			// 			method: 'PUT',
+			// 			url: '=/sites/{{$parameter["siteId"]}}',
+			// 			body: {
+			// 				name: '={{ $parameter.name }}',
+			// 				path: '={{ $parameter.path }}',
+			// 				adminGroupIds: ['={{ $parameter.adminGroupIds }}'],
+			// 				networkIds: ['={{ $parameter.networkIds }}'],
+			// 			},
+			// 		},
+			// 	},
+			// },
 		],
 		default: 'getManySites',
 	},
