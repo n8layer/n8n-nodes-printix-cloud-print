@@ -10,6 +10,7 @@ import { siteFields, siteOperations } from './descriptions/SiteDescription';
 import { networkOperations, networkFields } from './descriptions/NetworkDescription';
 import { groupOperations, groupFields } from './descriptions/GroupDescription';
 import { jobOperations, jobFields } from './descriptions/JobDescription';
+import { snmpOperations, snmpFields } from './descriptions/SNMPDescription';
 export class PrintixCloudPrint implements INodeType {
 	description: INodeTypeDescription = {
 		displayName: 'Printix Cloud Print',
@@ -66,6 +67,10 @@ export class PrintixCloudPrint implements INodeType {
 						value: 'site',
 					},
 					{
+						name: 'SNMP',
+						value: 'snmp',
+					},
+					{
 						name: 'User',
 						value: 'user',
 					},
@@ -84,6 +89,8 @@ export class PrintixCloudPrint implements INodeType {
 			...groupFields,
 			...jobOperations,
 			...jobFields,
+			...snmpOperations,
+			...snmpFields,
 		],
 	};
 }
