@@ -52,6 +52,15 @@ export const jobOperations: INodeProperties[] = [
 					},
 				},
 			},
+			// {
+			// 	name: 'Submit a Job',
+			// 	value: 'submitJob',
+			// 	description: 'Submit a job',
+			// 	action: 'Submit job',
+			// 	routing: {
+			// 		request: {
+			// 			method: 'POST',
+			// 			url: '=/printers/{{$parameter["printerId"]}}/queues/{{$parameter["queueId"]}}/jobs',
 		],
 		default: 'getMany',
 	},
