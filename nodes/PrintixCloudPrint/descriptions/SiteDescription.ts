@@ -18,7 +18,7 @@ export const siteOperations: INodeProperties[] = [
 				name: 'Create A Site',
 				value: 'createSite',
 				description: 'Create site',
-				action: 'Create site',
+				action: 'Create a site',
 				routing: {
 					request: {
 						method: 'POST',
@@ -36,7 +36,7 @@ export const siteOperations: INodeProperties[] = [
 				name: 'Delete A Site',
 				value: 'deleteSite',
 				description: 'Delete site',
-				action: 'Delete site',
+				action: 'Delete a site',
 				routing: {
 					request: {
 						method: 'DELETE',
@@ -48,26 +48,26 @@ export const siteOperations: INodeProperties[] = [
 				},
 			},
 			{
-				name: 'Get A Site',
-				value: 'getSite',
-				description: 'Get site',
-				action: 'Get site',
-				routing: {
-					request: {
-						method: 'GET',
-						url: '=/sites/{{$parameter["siteId"]}}',
-					},
-				},
-			},
-			{
-				name: 'Get Many Sites',
+				name: 'Query Many Sites',
 				value: 'getManySites',
 				description: 'Get all sites',
-				action: 'Get many sites',
+				action: 'Query many sites',
 				routing: {
 					request: {
 						method: 'GET',
 						url: '/sites',
+					},
+				},
+			},
+			{
+				name: 'Retrieve A Site',
+				value: 'getSite',
+				description: 'Get site',
+				action: 'Retrieve a site',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '=/sites/{{$parameter["siteId"]}}',
 					},
 				},
 			},

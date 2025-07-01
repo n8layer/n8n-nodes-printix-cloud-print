@@ -47,10 +47,10 @@ export const userOperations: INodeProperties[] = [
 				},
 			},
 			{
-				name: 'Get Many Users',
+				name: 'List Users',
 				value: 'getUsers',
 				description: 'Get users',
-				action: 'Get many users',
+				action: 'List users',
 				routing: {
 					request: {
 						method: 'GET',
@@ -62,10 +62,10 @@ export const userOperations: INodeProperties[] = [
 				},
 			},
 			{
-				name: 'Get User',
+				name: 'Find User By ID',
 				value: 'getUser',
 				description: 'Get a user',
-				action: 'Get user',
+				action: 'Find user by ID',
 				routing: {
 					request: {
 						method: 'GET',

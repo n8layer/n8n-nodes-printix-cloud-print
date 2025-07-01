@@ -18,7 +18,7 @@ export const networkOperations: INodeProperties[] = [
 				name: 'Create A Network',
 				value: 'createNetwork',
 				description: 'Create network',
-				action: 'Create network',
+				action: 'Create a network',
 				routing: {
 					request: {
 						method: 'POST',
@@ -43,7 +43,7 @@ export const networkOperations: INodeProperties[] = [
 				name: "Delete A Network",
 				value: "deleteNetwork",
 				description: "Delete network",
-				action: "Delete network",
+				action: "Delete a network",
 				routing: {
 					request: {
 						method: "DELETE",
@@ -54,22 +54,38 @@ export const networkOperations: INodeProperties[] = [
 					},
 				},
 			},
-			{
-				name: 'Get Many',
+									{
+				name: 'Query Many Networks',
 				value: 'getMany',
-				action: 'Get many networks',
+				action: 'Query many networks',
 				routing: {
 					request: {
-						method: 'GET',	
+						method: 'GET',
 						url: '/networks',
+					},
+					output: {
+						postReceive: [
+							{
+								type: 'setKeyValue',
+								properties: {
+									extractedNetworks: '={{ $parameter.extractNetworkIds ? $response.body.networks.map(n => ({ name: n.name, networkId: n._links.self.href.split("/networks/")[1], siteId: n._links.site.href.split("/sites/")[1] })) : [$response.body] }}',
+								},
+							},
+							{
+								type: 'rootProperty',
+								properties: {
+									property: 'extractedNetworks',
+								},
+							},
+						],
 					},
 				},
 			},
 			{
-				name: 'Get A Network',
+				name: 'Retrieve A Network',
 				value: 'getNetwork',
 				description: 'Get network',
-				action: 'Get network',
+				action: 'Retrieve a network',
 				routing: {
 					request: {
 						method: 'GET',
@@ -83,6 +99,19 @@ export const networkOperations: INodeProperties[] = [
 ];
 
 export const networkFields: INodeProperties[] = [
+	{
+		displayName: 'Extract Network and Site IDs',
+		name: 'extractNetworkIds',
+		type: 'boolean',
+		displayOptions: {
+			show: {
+				resource: ['network'],
+				operation: ['getMany'],
+			},
+		},
+		default: true,
+		description: 'Whether to extract network IDs from URLs and return each network as a separate item. If disabled, returns the raw API response.',
+	},
 	{
 		displayName: 'Network ID',
 		name: 'networkId',

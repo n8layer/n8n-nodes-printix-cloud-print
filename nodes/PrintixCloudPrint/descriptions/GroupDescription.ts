@@ -46,9 +46,9 @@ export const groupOperations: INodeProperties[] = [
 				},
 			},
 			{
-				name: 'Get A Group',
+				name: 'Fetch Group Details',
 				value: 'getGroup',
-				action: 'Get a group',
+				action: 'Fetch group details',
 				routing: {
 					request: {
 						method: 'GET',
@@ -57,9 +57,9 @@ export const groupOperations: INodeProperties[] = [
 				},
 			},
 			{
-				name: 'Get Many Groups',
+				name: 'Listing And Searching Groups',
 				value: 'getMany',
-				action: 'Get many groups',
+				action: 'Listing and searching groups',
 				routing: {
 					request: {
 						method: 'GET',

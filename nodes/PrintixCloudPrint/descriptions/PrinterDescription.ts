@@ -15,21 +15,10 @@ export const printerOperations: INodeProperties[] = [
 		},
 		options: [
 			{
-				name: 'Get Many',
-				value: 'getMany',
-				action: 'Get many printers',
-				routing: {
-					request: {
-						method: 'GET',
-						url: '/printers',
-					},
-				},
-			},
-			{
-				name: 'Get Printer',
+				name: 'Get Printer Properties',
 				value: 'getPrinter',
 				description: 'Get a printer',
-				action: 'Get printer',
+				action: 'Get printer properties',
 				routing: {
 					request: {
 						method: 'GET',
@@ -42,6 +31,17 @@ export const printerOperations: INodeProperties[] = [
 							model: '{{ $parameter.model }}',
 							vendor: '{{ $parameter.vendor }}',
 						},
+					},
+				},
+			},
+			{
+				name: 'List Printers',
+				value: 'getMany',
+				action: 'List printers',
+				routing: {
+					request: {
+						method: 'GET',
+						url: '/printers',
 					},
 				},
 			},
