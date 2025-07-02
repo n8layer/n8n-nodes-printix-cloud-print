@@ -47,7 +47,8 @@ export const groupOperations: INodeProperties[] = [
 			},
 			{
 				name: 'Fetch Group Details',
-				value: 'getGroup',
+				value: 'getSingleGroup',
+				description: 'Fetch a single group by ID',
 				action: 'Fetch group details',
 				routing: {
 					request: {
@@ -57,13 +58,29 @@ export const groupOperations: INodeProperties[] = [
 				},
 			},
 			{
-				name: 'Listing And Searching Groups',
+				name: 'List Groups',
 				value: 'getMany',
-				action: 'Listing and searching groups',
+				action: 'List groups',
 				routing: {
 					request: {
 						method: 'GET',
 						url: '/groups',
+					},
+					output: {
+						postReceive: [
+							{
+								type: 'setKeyValue',
+								properties: {
+									extractedGroups: '={{ $parameter.extractGroupIds ? $response.body.groups.map(g => ({ ...g, groupId: g._links.self.href.split("/groups/")[1] })) : [$response.body] }}',
+								},
+							},
+							{
+								type: 'rootProperty',
+								properties: {
+									property: 'extractedGroups',
+								},
+							},
+						],
 					},
 				},
 			},
@@ -74,6 +91,19 @@ export const groupOperations: INodeProperties[] = [
 
 export const groupFields: INodeProperties[] = [
 	{
+		displayName: 'Extract Group IDs',
+		name: 'extractGroupIds',
+		type: 'boolean',
+		displayOptions: {
+			show: {
+				resource: ['group'],
+				operation: ['getMany'],
+			},
+		},
+		default: true,
+		description: 'Whether to extract group IDs from URLs and return each group as a separate item. If disabled, returns the raw API response.',
+	},
+	{
 		displayName: 'Group ID',
 		name: 'groupId',
 		type: 'string',
@@ -81,11 +111,11 @@ export const groupFields: INodeProperties[] = [
 		displayOptions: {
 			show: {
 				resource: ['group'],
-				operation: ['getGroup'],
+				operation: ['getSingleGroup', 'deleteGroup'],
 			},
 		},
 		default: '',
-		description: 'The ID of the group to get',
+		description: 'The ID of the group',
 	},
 	{
 		displayName: 'Name',

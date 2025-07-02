@@ -43,6 +43,22 @@ export const printerOperations: INodeProperties[] = [
 						method: 'GET',
 						url: '/printers',
 					},
+					output: {
+						postReceive: [
+							{
+								type: 'setKeyValue',
+								properties: {
+									extractedPrinters: '={{ $parameter.extractPrinterIds ? $response.body.printers.map(p => ({ ...p, printerId: p._links.self.href.split("/printers/")[1].split("/")[0] })) : [$response.body] }}',
+								},
+							},
+							{
+								type: 'rootProperty',
+								properties: {
+									property: 'extractedPrinters',
+								},
+							},
+						],
+					},
 				},
 			},
 		],
@@ -51,6 +67,19 @@ export const printerOperations: INodeProperties[] = [
 ];
 
 export const printerFields: INodeProperties[] = [
+	{
+		displayName: 'Extract Printer IDs',
+		name: 'extractPrinterIds',
+		type: 'boolean',
+		displayOptions: {
+			show: {
+				resource: ['printer'],
+				operation: ['getMany'],
+			},
+		},
+		default: false,
+		description: 'Whether to extract individual printer items with printerId field, or return raw response',
+	},
 	{
 		displayName: 'Printer ID',
 		name: 'printerId',

@@ -68,7 +68,7 @@ export const networkOperations: INodeProperties[] = [
 							{
 								type: 'setKeyValue',
 								properties: {
-									extractedNetworks: '={{ $parameter.extractNetworkIds ? $response.body.networks.map(n => ({ name: n.name, networkId: n._links.self.href.split("/networks/")[1], siteId: n._links.site.href.split("/sites/")[1] })) : [$response.body] }}',
+									extractedNetworks: '={{ $parameter.extractNetworkIds ? $response.body.networks.map(n => ({ ...n, networkId: n._links.self.href.split("/networks/")[1], siteId: n._links.site.href.split("/sites/")[1] })) : [$response.body] }}',
 								},
 							},
 							{

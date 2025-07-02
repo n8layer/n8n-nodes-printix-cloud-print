@@ -37,7 +37,10 @@ export const jobOperations: INodeProperties[] = [
 				routing: {
 					request: {
 						method: 'POST',
-						url: '={{ $parameter.completeUploadUrl }}',
+						url: '=/jobs/{{$parameter["jobId"]}}/completeUpload',
+						headers: {
+							'Content-Type': 'application/x-www-form-urlencoded',
+						},
 					},
 				},
 			},
@@ -82,14 +85,25 @@ export const jobOperations: INodeProperties[] = [
 			{
 				name: 'Submit Job',
 				value: 'submitJob',
-				description: 'Submit a new job with specified parameters',
+				description: 'Submit a new print job with specified printing options',
 				action: 'Submit job',
 				routing: {
 					request: {
 						method: 'POST',
 						url: '=/printers/{{$parameter["printerId"]}}/queues/{{$parameter["queueId"]}}/submit',
 						headers: {
-							version: '1.1',
+							'Content-Type': 'application/json',
+							'Accept': 'application/json',
+							'version': '1.1',
+						},
+						body: {
+							color: '={{ $parameter.color === "true" }}',
+							duplex: '={{ $parameter.duplex }}',
+							page_orientation: '={{ $parameter.pageOrientation }}',
+							copies: '={{ Number($parameter.copies) }}',
+							media_size: '={{ $parameter.mediaSize }}',
+							scaling: '={{ $parameter.scaling }}',
+							userMapping: '={{ $parameter.userMapping ? JSON.parse($parameter.userMapping) : null }}',
 						},
 						qs: {
 							title: '={{ $parameter.title }}',
@@ -97,35 +111,28 @@ export const jobOperations: INodeProperties[] = [
 							PDL: '={{ $parameter.pdl }}',
 							releaseImmediately: '={{ $parameter.releaseImmediately }}',
 						},
-						body: {
-							color: '={{ $parameter.color }}',
-							duplex: '={{ $parameter.duplex }}',
-							page_orientation: '={{ $parameter.pageOrientation }}',
-							copies: '={{ $parameter.copies }}',
-							media_size: '={{ $parameter.mediaSize }}',
-							scaling: '={{ $parameter.scaling }}',
-							userMapping: '={{ $parameter.userMapping }}',
-						},
 					},
+
 				},
 			},
-			{
-				name: 'Upload File',
-				value: 'uploadFile',
-				description: 'Upload a file to cloud storage for printing',
-				action: 'Upload file',
-				routing: {
-					request: {
-						method: 'PUT',
-						url: '={{ $parameter.uploadUrl }}',
-						headers: {
-							'Content-Type': '={{ $parameter.contentType }}',
-							'x-ms-blob-type': '={{ $parameter.blobType }}',
-						},
-						body: '={{ $parameter.fileData }}',
-					},
-				},
-			},
+
+			// {
+			// 	name: 'Upload File',
+			// 	value: 'uploadFile',
+			// 	description: 'Upload a file to cloud storage for printing (Note: May require HTTP Request node instead due to authentication conflicts)',
+			// 	action: 'Upload file',
+			// 	routing: {
+			// 		request: {
+			// 			method: 'PUT',
+			// 			url: '={{ $parameter.uploadUrl }}',
+			// 			headers: {
+			// 				'Content-Type': '={{ $parameter.contentType }}',
+			// 				'x-ms-blob-type': '={{ $parameter.blobType }}',
+			// 			},
+			// 			body: '={{ $binary.data }}',
+			// 		},
+			// 	},
+			// },
 		],
 		default: 'getMany',
 	},
@@ -140,11 +147,11 @@ export const jobFields: INodeProperties[] = [
 		displayOptions: {
 			show: {
 				resource: ['job'],
-				operation: ['getJob', 'deleteJob'],
+				operation: ['getJob', 'deleteJob', 'changeOwner', 'completeUpload'],
 			},
 		},
 		default: '',
-		description: 'The ID of the job to get or delete',
+		description: 'The ID of the job',
 	},
 	{
 		displayName: 'User Email',
@@ -160,37 +167,10 @@ export const jobFields: INodeProperties[] = [
 		default: '',
 		description: 'The email of the user to change the owner of the job to',
 	},
-	// Submit job fields
+
+	// Submit Job fields
 	{
-		displayName: 'Printer ID',
-		name: 'printerId',
-		type: 'string',
-		required: true,
-		displayOptions: {
-			show: {
-				resource: ['job'],
-				operation: ['submitJob'],
-			},
-		},
-		default: '',
-		description: 'The ID of the printer to submit the job to',
-	},
-	{
-		displayName: 'Queue ID',
-		name: 'queueId',
-		type: 'string',
-		required: true,
-		displayOptions: {
-			show: {
-				resource: ['job'],
-				operation: ['submitJob'],
-			},
-		},
-		default: '',
-		description: 'The ID of the queue to submit the job to',
-	},
-	{
-		displayName: 'Title',
+		displayName: 'Job Title',
 		name: 'title',
 		type: 'string',
 		required: true,
@@ -215,7 +195,35 @@ export const jobFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'The name of the user that is printing, for integration with third-party print solutions',
+		description: 'The name of the user that is printing, for integration with third party print solutions',
+	},
+	{
+		displayName: 'Printer ID',
+		name: 'printerId',
+		type: 'string',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['job'],
+				operation: ['submitJob'],
+			},
+		},
+		default: '',
+		description: 'The ID of the printer to send the job to',
+	},
+	{
+		displayName: 'Queue ID',
+		name: 'queueId',
+		type: 'string',
+		required: true,
+		displayOptions: {
+			show: {
+				resource: ['job'],
+				operation: ['submitJob'],
+			},
+		},
+		default: '',
+		description: 'The ID of the print queue to use',
 	},
 	{
 		displayName: 'PDL',
@@ -228,7 +236,7 @@ export const jobFields: INodeProperties[] = [
 			},
 		},
 		default: '',
-		description: 'The Printer Document Language to use for the document to be printed, if it is not PDF (optional)',
+		description: 'Optional: The Printer Document Language to use for the document to be printed, if it is not PDF',
 	},
 	{
 		displayName: 'Release Immediately',
@@ -241,7 +249,7 @@ export const jobFields: INodeProperties[] = [
 			},
 		},
 		default: true,
-		description: 'Whether the print job should be released on the printer immediately after the uploadCompleted link was invoked',
+		description: 'Whether the print job should be released on the printer immediately after the onLoadCompleted link was invoked',
 	},
 	{
 		displayName: 'Color',
@@ -264,7 +272,7 @@ export const jobFields: INodeProperties[] = [
 			},
 		],
 		default: 'true',
-		description: 'Whether the document should be printed in color',
+		description: 'Sets whether the document should be printed in color',
 	},
 	{
 		displayName: 'Duplex',
@@ -282,16 +290,16 @@ export const jobFields: INodeProperties[] = [
 				value: 'NONE',
 			},
 			{
-				name: 'Short Edge',
-				value: 'SHORT_EDGE',
-			},
-			{
 				name: 'Long Edge',
 				value: 'LONG_EDGE',
 			},
+			{
+				name: 'Short Edge',
+				value: 'SHORT_EDGE',
+			},
 		],
 		default: 'NONE',
-		description: 'Sets what kind of duplex to use to print the document (optional)',
+		description: 'Sets what kind of duplex to use to print the document, if any',
 	},
 	{
 		displayName: 'Page Orientation',
@@ -318,7 +326,7 @@ export const jobFields: INodeProperties[] = [
 			},
 		],
 		default: 'PORTRAIT',
-		description: 'Sets the page orientation (optional)',
+		description: 'Sets the page orientation',
 	},
 	{
 		displayName: 'Copies',
@@ -369,6 +377,30 @@ export const jobFields: INodeProperties[] = [
 				value: 'A5',
 			},
 			{
+				name: 'ANSI C',
+				value: 'ANSIC',
+			},
+			{
+				name: 'ANSI D',
+				value: 'ANSID',
+			},
+			{
+				name: 'ANSI E',
+				value: 'ANSIE',
+			},
+			{
+				name: 'ARCH C',
+				value: 'ARCHC',
+			},
+			{
+				name: 'ARCH D',
+				value: 'ARCHD',
+			},
+			{
+				name: 'ARCH E',
+				value: 'ARCHE',
+			},
+			{
 				name: 'B4',
 				value: 'B4',
 			},
@@ -377,8 +409,60 @@ export const jobFields: INodeProperties[] = [
 				value: 'B5',
 			},
 			{
+				name: 'COM10',
+				value: 'COM10',
+			},
+			{
+				name: 'DL',
+				value: 'DL',
+			},
+			{
+				name: 'Exec',
+				value: 'EXEC',
+			},
+			{
 				name: 'Executive',
 				value: 'EXECUTIVE',
+			},
+			{
+				name: 'ISO A0',
+				value: 'ISOA0',
+			},
+			{
+				name: 'ISO A1',
+				value: 'ISOA1',
+			},
+			{
+				name: 'ISO A2',
+				value: 'ISOA2',
+			},
+			{
+				name: 'ISO A3',
+				value: 'ISOA3',
+			},
+			{
+				name: 'ISO A4',
+				value: 'ISOA4',
+			},
+			{
+				name: 'ISO B3',
+				value: 'ISOB3',
+			},
+			{
+				name: 'ISO B4',
+				value: 'ISOB4',
+			},
+			{
+				name: 'ISO B5',
+				value: 'ISOB5',
+			},
+			{
+				name: 'JIS B4',
+				value: 'JISB4',
+			},
+			{
+				name: 'JIS B5',
+				value: 'JISB5',
 			},
 			{
 				name: 'Legal',
@@ -387,6 +471,18 @@ export const jobFields: INodeProperties[] = [
 			{
 				name: 'Letter',
 				value: 'LETTER',
+			},
+			{
+				name: 'Monarch',
+				value: 'MONARCH',
+			},
+			{
+				name: 'Statement',
+				value: 'STATEMENT',
+			},
+			{
+				name: 'Tabloid',
+				value: 'TABLOID',
 			},
 		],
 		default: 'A4',
@@ -417,21 +513,23 @@ export const jobFields: INodeProperties[] = [
 			},
 		],
 		default: 'NOSCALE',
-		description: 'Determines how the job should be scaled if at all; if set the document will be scaled to the paper size (optional)',
+		description: 'Determines how the job should be scaled if at all; if set the document will be scaled to fit the page size',
 	},
 	{
 		displayName: 'User Mapping',
 		name: 'userMapping',
-		type: 'json',
+		type: 'string',
 		displayOptions: {
 			show: {
 				resource: ['job'],
 				operation: ['submitJob'],
 			},
 		},
-		default: '{}',
-		description: 'When the field is specified, the API will assign the job to the user matching the mapping (optional)',
+		default: '',
+		description: 'Optional field. When specified, the API will assign the job to the user matching the mapping. Should be a JSON object with "key" and "value" fields (e.g., {"key": "AzureObjectId", "value": "12345"})',
+		placeholder: '{"key": "AzureObjectId", "value": "user-ID"}',
 	},
+
 	// Upload file fields
 	{
 		displayName: 'Upload URL',
@@ -497,33 +595,10 @@ export const jobFields: INodeProperties[] = [
 		default: 'BlockBlob',
 		description: 'The blob type for Azure storage (use BlockBlob for most cases)',
 	},
-	{
-		displayName: 'File Data',
-		name: 'fileData',
-		type: 'string',
-		required: true,
-		displayOptions: {
-			show: {
-				resource: ['job'],
-				operation: ['uploadFile'],
-			},
-		},
-		default: '',
-		description: 'The binary data of the file to upload (use binary data from previous node)',
-	},
-	// Complete upload fields
-	{
-		displayName: 'Complete Upload URL',
-		name: 'completeUploadUrl',
-		type: 'string',
-		required: true,
-		displayOptions: {
-			show: {
-				resource: ['job'],
-				operation: ['completeUpload'],
-			},
-		},
-		default: '',
-		description: 'The complete upload URL returned from the submit request to notify Printix that the upload is finished',
-	},
+
+
 ];
+
+
+
+
