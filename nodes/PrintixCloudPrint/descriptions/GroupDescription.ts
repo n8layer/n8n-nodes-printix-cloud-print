@@ -65,6 +65,11 @@ export const groupOperations: INodeProperties[] = [
 					request: {
 						method: 'GET',
 						url: '/groups',
+						qs: {
+							query: '={{ $parameter.query }}',
+							page: '={{ $parameter.page }}',
+							pageSize: '={{ $parameter.pageSize }}',
+						},
 					},
 					output: {
 						postReceive: [
@@ -170,5 +175,44 @@ export const groupFields: INodeProperties[] = [
 		},
 		default: '',
 		description: 'The description of the group to create',
+	},
+	{
+		displayName: 'Query',
+		name: 'query',
+		type: 'string',
+		displayOptions: {
+			show: {
+				resource: ['group'],
+				operation: ['getMany'],
+			},
+		},
+		default: '',
+		description: 'The query to search for groups',
+	},
+	{
+		displayName: 'Page',
+		name: 'page',
+		type: 'number',
+		displayOptions: {
+			show: {
+				resource: ['group'],
+				operation: ['getMany'],
+			},
+		},
+		default: 0,
+		description: 'The page number to fetch',
+	},
+	{
+		displayName: 'Page Size',
+		name: 'pageSize',
+		type: 'number',
+		displayOptions: {
+			show: {
+				resource: ['group'],
+				operation: ['getMany'],
+			},
+		},
+		default: 20,
+		description: 'The number of groups to fetch per page',
 	},
 ];
