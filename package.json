@@ -5,11 +5,11 @@
   "keywords": [
     "n8n-community-node-package"
   ],
-  "license": "MIT",
-  "homepage": "https://www.elasticit.com/",
+  "license": "AGPL-3.0",
+  "homepage": "https://www.n8layer.io/",
   "author": {
-    "name": "Robert Birone",
-    "email": "robertb@elasticit.com"
+    "name": "N8layer",
+    "email": "support@n8layer.io"
   },
   "repository": {
     "type": "git",
