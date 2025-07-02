@@ -112,7 +112,6 @@ export const jobOperations: INodeProperties[] = [
 							releaseImmediately: '={{ $parameter.releaseImmediately }}',
 						},
 					},
-
 				},
 			},
 
