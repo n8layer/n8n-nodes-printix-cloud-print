@@ -116,3 +116,14 @@ jobs:
 
           **Full Changelog**: https://github.com/${{ github.repository }}/commits/v${{ steps.version_bump.outputs.new_version }}" \
             --latest
+
+      - name: Publish to NPM
+        if: steps.check_changes.outputs.should_release == 'true'
+        run: |
+          # Setup npm authentication
+          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+
+          # Publish to NPM
+          pnpm publish --no-git-checks
+        env:
+          NPM_TOKEN: ${{ secrets.npm_token }}
