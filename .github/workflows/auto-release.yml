@@ -102,20 +102,17 @@ jobs:
 
       - name: Create GitHub Release
         if: steps.check_changes.outputs.should_release == 'true'
-        uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: v${{ steps.version_bump.outputs.new_version }}
-          release_name: Release v${{ steps.version_bump.outputs.new_version }}
-          body: |
-            ## Changes
+        run: |
+          gh release create "v${{ steps.version_bump.outputs.new_version }}" \
+            --title "Release v${{ steps.version_bump.outputs.new_version }}" \
+            --notes "## Changes
 
-            Auto-generated release for version ${{ steps.version_bump.outputs.new_version }}
+          Auto-generated release for version ${{ steps.version_bump.outputs.new_version }}
 
-            ### What's Changed
-            - Automated version bump and release
+          ### What's Changed
+          - Automated version bump and release
 
-            **Full Changelog**: https://github.com/${{ github.repository }}/commits/v${{ steps.version_bump.outputs.new_version }}
-          draft: false
-          prerelease: false
+          **Full Changelog**: https://github.com/${{ github.repository }}/commits/v${{ steps.version_bump.outputs.new_version }}" \
+            --latest
