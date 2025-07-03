@@ -62,6 +62,10 @@ export const networkOperations: INodeProperties[] = [
 					request: {
 						method: 'GET',
 						url: '/networks',
+						qs: {
+							page: '={{ $parameter.page }}',
+							pageSize: '={{ $parameter.pageSize }}',
+						},
 					},
 					output: {
 						postReceive: [
@@ -219,5 +223,31 @@ export const networkFields: INodeProperties[] = [
 		},
 		default: '',
 		description: 'The ID of the site to create (optional)',
+	},
+	{
+		displayName: 'Page',
+		name: 'page',
+		type: 'number',
+		displayOptions: {
+			show: {
+				resource: ['network'],
+				operation: ['getMany'],
+			},
+		},
+		default: 0,
+		description: 'An integer value that indicates which page of the results to display if the list of networks is split over multiple pages',
+	},
+	{
+		displayName: 'Page Size',
+		name: 'pageSize',
+		type: 'number',
+		displayOptions: {
+			show: {
+				resource: ['network'],
+				operation: ['getMany'],
+			},
+		},
+		default: 20,
+		description: 'An integer value that indicates the number of results to display per page',
 	},
 ];
