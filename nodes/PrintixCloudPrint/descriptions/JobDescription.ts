@@ -75,12 +75,27 @@ export const jobOperations: INodeProperties[] = [
 				name: 'Retrieve Jobs',
 				value: 'getMany',
 				action: 'Retrieve jobs',
-				routing: {
-					request: {
-						method: 'GET',
-						url: '/jobs',
+						routing: {
+						request: {
+							method: 'GET',
+							url: '/jobs',
+							qs: {
+								query: '={{ $parameter.query }}',
+								page: '={{ $parameter.page }}',
+								pageSize: '={{ $parameter.pageSize }}',
+							},
+						},
+						output: {
+							postReceive: [
+								{
+									type: 'set',
+									properties: {
+										value: '={{ $parameter.extractJobs ? $response.body.jobs : $response.body }}',
+									},
+								},
+							],
+						},
 					},
-				},
 			},
 			{
 				name: 'Submit Job',
@@ -593,8 +608,58 @@ export const jobFields: INodeProperties[] = [
 		default: 'BlockBlob',
 		description: 'The blob type for Azure storage (use BlockBlob for most cases)',
 	},
-
-
+  {
+		displayName: 'Query',
+		name: 'query',
+		type: 'string',
+		displayOptions: {
+			show: {
+				resource: ['job'],
+				operation: ['getMany'],
+			},
+		},
+		default: '',
+		description: 'A parameter used to look for printers whose name contains a specific sequence of characters',
+	},
+	{
+		displayName: 'Page',
+		name: 'page',
+		type: 'number',
+		displayOptions: {
+			show: {
+				resource: ['job'],
+				operation: ['getMany'],
+			},
+		},
+		default: 0,
+		description: 'An integer value that indicates which page of the results to display if the list of printers is split over multiple pages',
+	},
+	{
+		displayName: 'Page Size',
+		name: 'pageSize',
+		type: 'number',
+		displayOptions: {
+			show: {
+				resource: ['job'],
+				operation: ['getMany'],
+			},
+		},
+		default: 20,
+		description: 'An integer value that indicates the number of results to display per page',
+	},
+	{
+		displayName: 'Extract Jobs',
+		name: 'extractJobs',
+		type: 'boolean',
+		displayOptions: {
+			show: {
+				resource: ['job'],
+				operation: ['getMany'],
+			},
+		},
+		default: false,
+		description: 'Whether to extract just the jobs array from the response',
+	},
 ];
 
 
