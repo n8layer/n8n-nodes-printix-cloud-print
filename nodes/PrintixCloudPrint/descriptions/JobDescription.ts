@@ -113,24 +113,7 @@ export const jobOperations: INodeProperties[] = [
 						},
 					},
 				},
-			},
-			// {
-			// 	name: 'Upload File',
-			// 	value: 'uploadFile',
-			// 	description: 'Upload a file to cloud storage for printing (Note: May require HTTP Request node instead due to authentication conflicts)',
-			// 	action: 'Upload file',
-			// 	routing: {
-			// 		request: {
-			// 			method: 'PUT',
-			// 			url: '={{ $parameter.uploadUrl }}',
-			// 			headers: {
-			// 				'Content-Type': '={{ $parameter.contentType }}',
-			// 				'x-ms-blob-type': '={{ $parameter.blobType }}',
-			// 			},
-			// 			body: '={{ $binary.data }}',
-			// 		},
-			// 	},
-			// },
+			}
 		],
 		default: 'getMany',
 	},
@@ -526,74 +509,7 @@ export const jobFields: INodeProperties[] = [
 		default: '',
 		description: 'Optional field. When specified, the API will assign the job to the user matching the mapping. Should be a JSON object with "key" and "value" fields (e.g., {"key": "AzureObjectId", "value": "12345"})',
 		placeholder: '{"key": "AzureObjectId", "value": "user-ID"}',
-	},
-
-	// Upload file fields
-	{
-		displayName: 'Upload URL',
-		name: 'uploadUrl',
-		type: 'string',
-		required: true,
-		displayOptions: {
-			show: {
-				resource: ['job'],
-				operation: ['uploadFile'],
-			},
-		},
-		default: '',
-		description: 'The cloud storage URL returned from the submit request',
-	},
-	{
-		displayName: 'Content Type',
-		name: 'contentType',
-		type: 'options',
-		displayOptions: {
-			show: {
-				resource: ['job'],
-				operation: ['uploadFile'],
-			},
-		},
-		options: [
-			{
-				name: 'PDF',
-				value: 'application/pdf',
-			},
-			{
-				name: 'Text',
-				value: 'text/plain',
-			},
-			{
-				name: 'Word Document',
-				value: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-			},
-			{
-				name: 'Excel Document',
-				value: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-			},
-		],
-		default: 'application/pdf',
-		description: 'The content type of the file being uploaded',
-	},
-	{
-		displayName: 'Blob Type',
-		name: 'blobType',
-		type: 'options',
-		displayOptions: {
-			show: {
-				resource: ['job'],
-				operation: ['uploadFile'],
-			},
-		},
-		options: [
-			{
-				name: 'Block Blob',
-				value: 'BlockBlob',
-			},
-		],
-		default: 'BlockBlob',
-		description: 'The blob type for Azure storage (use BlockBlob for most cases)',
-	},
-
+	}
 
 ];
 
