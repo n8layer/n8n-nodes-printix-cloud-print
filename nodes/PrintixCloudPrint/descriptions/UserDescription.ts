@@ -56,8 +56,27 @@ export const userOperations: INodeProperties[] = [
 						method: 'GET',
 						url: '/users',
 						qs: {
-							role: '={{ $parameter.role || undefined }}',
+							query: '={{ $parameter.query }}',
+							role: '={{ $parameter.role }}',
+							page: '={{ $parameter.page }}',
+							pageSize: '={{ $parameter.pageSize }}',
 						},
+					},
+					output: {
+						postReceive: [
+							{
+								type: 'setKeyValue',
+								properties: {
+									extractedUsers: '={{ $parameter.extractUsers ? $response.body.users : [$response.body] }}',
+								},
+							},
+							{
+								type: 'rootProperty',
+								properties: {
+									property: 'extractedUsers',
+								},
+							},
+						],
 					},
 				},
 			},
@@ -210,4 +229,79 @@ export const userFields: INodeProperties[] = [
 		default: '',
 		description: 'ID of the user to delete',
 	},
-]
+	{
+		displayName: 'Query',
+		name: 'query',
+		type: 'string',
+		displayOptions: {
+			show: {
+				resource: ['user'],
+				operation: ['getUsers'],
+			},
+		},
+		default: '',
+		description: 'Query to search for users',
+	},
+	{
+		displayName: 'Role',
+		name: 'role',
+		type: 'options',
+		options: [
+			{
+				name: 'USER',
+				value: 'USER',
+			},
+			{
+				name: 'GUEST_USER',
+				value: 'GUEST_USER',
+			},
+		],
+		displayOptions: {
+			show: {
+				resource: ['user'],
+				operation: ['getUsers'],
+			},
+		},
+		default: 'USER',
+		description: 'Role to search for users',
+	},
+	{
+		displayName: 'Page',
+		name: 'page',
+		type: 'number',
+		displayOptions: {
+			show: {
+				resource: ['user'],
+				operation: ['getUsers'],
+			},
+		},
+		default: 0,
+		description: 'Page number to retrieve',
+	},
+	{
+		displayName: 'Page Size',
+		name: 'pageSize',
+		type: 'number',
+		displayOptions: {
+			show: {
+				resource: ['user'],
+				operation: ['getUsers'],
+			},
+		},
+		default: 20,
+		description: 'Number of items per page',
+	},
+	{
+		displayName: 'Extract Users',
+		name: 'extractUsers',
+		type: 'boolean',
+		displayOptions: {
+			show: {
+				resource: ['user'],
+				operation: ['getUsers'],
+			},
+		},
+		default: false,
+		description: 'Whether to extract just the users array from the response',
+	},
+];
