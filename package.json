@@ -1,19 +1,22 @@
 {
-  "name": "n8n-nodes-printix-cloud-print",
-  "version": "0.1.0",
+  "name": "@n8layer/n8n-nodes-printix-cloud-print",
+  "version": "0.1.3",
   "description": "This is an n8n community node. It lets you use Printix Cloud Print in your n8n workflows.",
   "keywords": [
     "n8n-community-node-package"
   ],
   "license": "AGPL-3.0",
-  "homepage": "https://www.n8layer.io/",
+  "homepage": "https://www.n8layer.io",
   "author": {
     "name": "N8layer",
     "email": "support@n8layer.io"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ElasticIT-LLC/n8n-nodes-printix-cloud-print.git"
+    "url": "https://github.com/n8layer/n8n-nodes-printix-cloud-print.git"
   },
   "engines": {
     "node": ">=18.10",
@@ -26,7 +29,7 @@
     "format": "prettier nodes credentials --write",
     "lint": "eslint nodes credentials package.json",
     "lintfix": "eslint nodes credentials package.json --fix",
-    "prepublishOnly": "npm build && npm lint -c .eslintrc.prepublish.js nodes credentials package.json"
+    "prepublishOnly": "pnpm run build && npx eslint -c .eslintrc.prepublish.js nodes credentials package.json"
   },
   "files": [
     "dist"
