@@ -75,27 +75,27 @@ export const jobOperations: INodeProperties[] = [
 				name: 'Retrieve Jobs',
 				value: 'getMany',
 				action: 'Retrieve jobs',
-						routing: {
-						request: {
-							method: 'GET',
-							url: '/jobs',
-							qs: {
-								query: '={{ $parameter.query }}',
-								page: '={{ $parameter.page }}',
-								pageSize: '={{ $parameter.pageSize }}',
-							},
-						},
-						output: {
-							postReceive: [
-								{
-									type: 'set',
-									properties: {
-										value: '={{ $parameter.extractJobs ? $response.body.jobs : $response.body }}',
-									},
-								},
-							],
+				routing: {
+					request: {
+						method: 'GET',
+						url: '/jobs',
+						qs: {
+							query: '={{ $parameter.query }}',
+							page: '={{ $parameter.page }}',
+							pageSize: '={{ $parameter.pageSize }}',
 						},
 					},
+					output: {
+						postReceive: [
+							{
+								type: 'rootProperty',
+								properties: {
+									property: 'jobs',
+								},
+							},
+						],
+					},
+				},
 			},
 			{
 				name: 'Submit Job',
@@ -164,6 +164,60 @@ export const jobFields: INodeProperties[] = [
 		description: 'The email of the user to change the owner of the job to',
 	},
 
+	// Retrieve Jobs fields
+	{
+		displayName: 'Query',
+		name: 'query',
+		type: 'string',
+		displayOptions: {
+			show: {
+				resource: ['job'],
+				operation: ['getMany'],
+			},
+		},
+		default: '',
+		description: 'Search query to filter jobs',
+	},
+	{
+		displayName: 'Page',
+		name: 'page',
+		type: 'number',
+		displayOptions: {
+			show: {
+				resource: ['job'],
+				operation: ['getMany'],
+			},
+		},
+		default: 1,
+		description: 'Page number for pagination',
+	},
+	{
+		displayName: 'Page Size',
+		name: 'pageSize',
+		type: 'number',
+		displayOptions: {
+			show: {
+				resource: ['job'],
+				operation: ['getMany'],
+			},
+		},
+		default: 20,
+		description: 'Number of items per page',
+	},
+	{
+		displayName: 'Extract Jobs Only',
+		name: 'extractJobs',
+		type: 'boolean',
+		displayOptions: {
+			show: {
+				resource: ['job'],
+				operation: ['getMany'],
+			},
+		},
+		default: true,
+		description: 'Whether to extract only the jobs array from the response or return the full response body (currently always extracts jobs array)',
+	},
+
 	// Submit Job fields
 	{
 		displayName: 'Job Title',
@@ -224,14 +278,45 @@ export const jobFields: INodeProperties[] = [
 	{
 		displayName: 'PDL',
 		name: 'pdl',
-		type: 'string',
+		type: 'options',
 		displayOptions: {
 			show: {
 				resource: ['job'],
 				operation: ['submitJob'],
 			},
 		},
-		default: '',
+		options: [
+			{
+				name: 'PCL5',
+				value: 'PCL5',
+			},
+			{
+				name: 'PCLXL',
+				value: 'PCLXL',
+			},
+			{
+				name: 'PDF',
+				value: 'PDF',
+			},
+			{
+				name: 'POSTSCRIPT',
+				value: 'POSTSCRIPT',
+			},
+			{
+				name: 'TEXT',
+				value: 'TEXT',
+			},
+			{
+				name: 'UFRII',
+				value: 'UFRII',
+			},
+			{
+				name: 'XPS',
+				value: 'XPS',
+			},
+		],
+		default: 'PDF',
+		required: true,
 		description: 'Optional: The Printer Document Language to use for the document to be printed, if it is not PDF',
 	},
 	{
