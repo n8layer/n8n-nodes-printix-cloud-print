@@ -114,24 +114,23 @@ export const jobOperations: INodeProperties[] = [
 					},
 				},
 			},
-
-			// {
-			// 	name: 'Upload File',
-			// 	value: 'uploadFile',
-			// 	description: 'Upload a file to cloud storage for printing (Note: May require HTTP Request node instead due to authentication conflicts)',
-			// 	action: 'Upload file',
-			// 	routing: {
-			// 		request: {
-			// 			method: 'PUT',
-			// 			url: '={{ $parameter.uploadUrl }}',
-			// 			headers: {
-			// 				'Content-Type': '={{ $parameter.contentType }}',
-			// 				'x-ms-blob-type': '={{ $parameter.blobType }}',
-			// 			},
-			// 			body: '={{ $binary.data }}',
-			// 		},
-			// 	},
-			// },
+			{
+				name: 'Upload File',
+				value: 'uploadFile',
+				description: 'Upload a file to cloud storage for printing (Note: May require HTTP Request node instead due to authentication conflicts)',
+				action: 'Upload file',
+				routing: {
+					request: {
+						method: 'PUT',
+						url: '={{ $parameter.uploadUrl }}',
+						headers: {
+							'Content-Type': '={{ $parameter.contentType }}',
+							'x-ms-blob-type': '={{ $parameter.blobType }}',
+						},
+						body: '={{ $binary.data }}',
+					},
+				},
+			},
 		],
 		default: 'getMany',
 	},
