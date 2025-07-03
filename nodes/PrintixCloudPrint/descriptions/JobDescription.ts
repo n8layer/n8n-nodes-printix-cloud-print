@@ -122,7 +122,7 @@ export const jobOperations: INodeProperties[] = [
 						},
 						qs: {
 							title: '={{ $parameter.title }}',
-							user: '={{ $parameter.user }}',
+							user: '={{ $parameter.user.toLowerCase().replace(/ /g, "+") }}',
 							PDL: '={{ $parameter.pdl }}',
 							releaseImmediately: '={{ $parameter.releaseImmediately }}',
 						},
