@@ -56,6 +56,26 @@ export const siteOperations: INodeProperties[] = [
 					request: {
 						method: 'GET',
 						url: '/sites',
+						qs: {
+							page: '={{ $parameter.page }}',
+							pageSize: '={{ $parameter.pageSize }}',
+						},
+					},
+					output: {
+						postReceive: [
+							{
+								type: 'setKeyValue',
+								properties: {
+									extractedSites: '={{ $parameter.extractSiteIds ? $response.body.sites.map(s => ({ ...s, siteId: s._links.self.href.split("/sites/")[1] })) : [$response.body] }}',
+								},
+							},
+							{
+								type: 'rootProperty',
+								properties: {
+									property: 'extractedSites',
+								},
+							},
+						],
 					},
 				},
 			},
@@ -202,5 +222,44 @@ export const siteFields: INodeProperties[] = [
 		},
 		default: '',
 		description: 'The ID of the site to delete',
+	},
+	{
+		displayName: 'Page',
+		name: 'page',
+		type: 'number',
+		displayOptions: {
+			show: {
+				resource: ['site'],
+				operation: ['getManySites'],
+			},
+		},
+		default: 0,
+		description: 'An integer value that indicates which page of the results to display if the list of sites is split over multiple pages',
+	},
+	{
+		displayName: 'Page Size',
+		name: 'pageSize',
+		type: 'number',
+		displayOptions: {
+			show: {
+				resource: ['site'],
+				operation: ['getManySites'],
+			},
+		},
+		default: 20,
+		description: 'An integer value that indicates the number of results to display per page',
+	},
+	{
+		displayName: 'Extract Site IDs',
+		name: 'extractSiteIds',
+		type: 'boolean',
+		displayOptions: {
+			show: {
+				resource: ['site'],
+				operation: ['getManySites'],
+			},
+		},
+		default: false,
+		description: 'Whether to extract just the site array and IDs from the response',
 	},
 ];
