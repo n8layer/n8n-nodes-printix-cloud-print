@@ -512,7 +512,3 @@ export const jobFields: INodeProperties[] = [
 	}
 
 ];
-
-
-
-
