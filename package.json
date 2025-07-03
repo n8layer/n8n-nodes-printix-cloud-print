@@ -11,9 +11,12 @@
     "name": "N8layer",
     "email": "support@n8layer.io"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ElasticIT-LLC/n8n-nodes-printix-cloud-print.git"
+    "url": "https://github.com/n8layer/n8n-nodes-printix-cloud-print.git"
   },
   "engines": {
     "node": ">=18.10",
