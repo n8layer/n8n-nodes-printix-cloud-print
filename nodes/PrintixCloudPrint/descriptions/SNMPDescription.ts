@@ -47,6 +47,26 @@ export const snmpOperations: INodeProperties[] = [
 					request: {
 						method: 'GET',
 						url: '/snmp',
+						qs: {
+							page: '={{ $parameter.page }}',
+							pageSize: '={{ $parameter.pageSize }}',
+						},
+					},
+					output: {
+						postReceive: [
+							{
+								type: 'setKeyValue',
+								properties: {
+									extractedSNMPConfigurations: '={{ $parameter.extractSNMPConfigurations ? $response.body.snmpConfigurations.map(s => ({ ...s, snmpId: s._links.self.href.split("/snmp/")[1] })) : [$response.body] }}',
+								},
+							},
+							{
+								type: 'rootProperty',
+								properties: {
+									property: 'extractedSNMPConfigurations',
+								},
+							},
+						],
 					},
 				},
 			},
@@ -380,5 +400,44 @@ export const snmpFields: INodeProperties[] = [
 		},
 		default: '',
 		description: 'The ID of the SNMP configuration to retrieve',
+	},
+	{
+		displayName: 'Extract SNMP Configurations',
+		name: 'extractSNMPConfigurations',
+		type: 'boolean',
+		displayOptions: {
+			show: {
+				resource: ['snmp'],
+				operation: ['getSNMPConfiguration'],
+			},
+		},
+		default: false,
+		description: 'Whether to extract just the SNMP configurations array from the response',
+	},
+	{
+		displayName: 'Page',
+		name: 'page',
+		type: 'number',
+		displayOptions: {
+			show: {
+				resource: ['snmp'],
+				operation: ['getSNMPConfiguration'],
+			},
+		},
+		default: 0,
+		description: 'The page number to retrieve',
+	},
+	{
+		displayName: 'Page Size',
+		name: 'pageSize',
+		type: 'number',
+		displayOptions: {
+			show: {
+				resource: ['snmp'],
+				operation: ['getSNMPConfiguration'],
+			},
+		},
+		default: 20,
+		description: 'The number of items per page',
 	},
 ];
