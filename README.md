@@ -4,6 +4,8 @@ This is an n8n community node. It lets you use Printix Cloud Print in your n8n w
 
 Printix Cloud Print is a cloud-based printing management solution that enables secure, mobile, and flexible printing from anywhere.
 
+This node provides comprehensive CRUD (Create, Read, Update, Delete) operations for managing printers, users, sites, networks, groups, print jobs, and SNMP configurations through the Printix Cloud Print API.
+
 [n8n](https://n8n.io/) is a [fair-code licensed](https://docs.n8n.io/reference/license/) workflow automation platform.
 
 [Installation](#installation)
@@ -21,32 +23,47 @@ Follow the [installation guide](https://docs.n8n.io/integrations/community-nodes
 This node supports the following operations:
 
 ### Printers
-- **Get Many**: Retrieve a list of all printers with optional filtering
-- **Get Printer**: Get specific printer information by ID, name, serial number, location, model, or vendor
+- **List Printers**: Retrieve a list of all printers with optional filtering and pagination
+- **Get Printer Properties**: Get specific printer information by ID, name, serial number, location, model, or vendor
 
 ### Users
-- **Get Many**: Retrieve a list of all users with optional filtering
-- **Get User**: Get specific user information by ID or name
+- **List Users**: Retrieve a list of all users with optional filtering and pagination
+- **Find User By ID**: Get specific user information by ID
+- **Create User**: Create a new user with email, full name, role, pin, and password
+- **Delete User**: Delete a user by ID
 
 ### Sites
-- **Get Many**: Retrieve a list of all sites with optional filtering
-- **Get Site**: Get specific site information by ID or name
+- **Query Many Sites**: Retrieve a list of all sites with optional pagination
+- **Retrieve A Site**: Get specific site information by ID
+- **Create A Site**: Create a new site with name, path, and network IDs
+- **Delete A Site**: Delete a site by ID
 
 ### Networks
-- **Get Many**: Retrieve a list of all networks with optional filtering
-- **Get Network**: Get specific network information by ID or name
+- **Query Many Networks**: Retrieve a list of all networks with optional pagination
+- **Retrieve A Network**: Get specific network information by ID
+- **Create A Network**: Create a new network with name, gateway settings, and optional site assignment
+- **Delete A Network**: Delete a network by ID
 
 ### Groups
-- **Get Many**: Retrieve a list of all groups with optional filtering
-- **Get Group**: Get specific group information by ID or name
+- **List Groups**: Retrieve a list of all groups with optional filtering and pagination
+- **Fetch Group Details**: Get specific group information by ID
+- **Create A Group**: Create a new group with name, external ID, identity provider, and description
+- **Delete A Group**: Delete a group by ID
 
 ### Jobs
-- **Get Many**: Retrieve a list of all print jobs with optional filtering and pagination
-- **Get Job**: Get specific job information by ID
+- **Retrieve Jobs**: Retrieve a list of all print jobs with optional filtering and pagination
+- **Retrieve A Single Job**: Get specific job information by ID
+- **Submit Job**: Submit a new print job with specified printing options (color, duplex, copies, media size, etc.)
+- **Delete A Job**: Delete a print job by ID
+- **Change Owner**: Change the owner of a print job to a different user
+- **Complete Upload**: Complete the upload process and notify Printix that the job is ready for printing
 
 ### SNMP
-- **Get Many**: Retrieve SNMP data for printers with optional filtering
-- **Get SNMP**: Get specific SNMP information by printer ID
+- **Retrieve SNMP Configuration (All)**: Retrieve all SNMP configurations with optional pagination
+- **Retrieve SNMP Configuration (By ID)**: Get specific SNMP configuration by ID
+- **Create SNMP Configuration**: Create a new SNMP configuration with security settings and network associations
+- **Update SNMP Configuration**: Update an existing SNMP configuration
+- **Delete SNMP Configuration**: Delete an SNMP configuration by ID
 
 ## Credentials
 
