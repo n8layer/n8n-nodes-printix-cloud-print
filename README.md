@@ -1,7 +1,5 @@
 # n8n-nodes-printix-cloud-print
 
-![Printix Cloud Print Logo](https://raw.githubusercontent.com/ElasticIT-LLC/n8n-nodes-printix-cloud-print/main/nodes/PrintixCloudPrint/Printix.svg)
-
 An n8n community node that provides integration with [Printix Cloud Print](https://printix.net/). This node allows you to interact with the Printix Cloud Print API to manage printers, users, sites, networks, groups, and print jobs in your n8n workflows.
 
 ## Table of Contents
